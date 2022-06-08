@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: http-ingress
+  namespace: pihole
+  annotations:
+    nginx.ingress.kubernetes.io/app-root: /admin
+    cert-manager.io/cluster-issuer: "le-global-issuer"
+spec:
+  tls:
+    - hosts:
+      - "pihole.ronneylira.com"
+      secretName: cert-ronneylira
+  rules:
+  - host: pihole.ronneylira.com
+    http:
+      paths:
+      - path: /admin
+        pathType: Prefix
+        backend:
+          service:
+            name: pihole-web
+            port:
+              number: 80
+---
