@@ -31,7 +31,7 @@ spec:
             name: env-configmap
         - secretRef:
             name: env-secrets
-        image: pihole/pihole:2022.04.3
+        image: pihole/pihole:2022.05
         imagePullPolicy: IfNotPresent
         name: pihole
         ports:
@@ -75,7 +75,7 @@ spec:
           - name: pihole-dnsmasqd-volume
             mountPath: /etc/dnsmasq.d/
       - name: cloudflared
-        image: visibilityspots/cloudflared:alpine-3.13
+        image: visibilityspots/cloudflared:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 5054
