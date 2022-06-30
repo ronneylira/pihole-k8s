@@ -58,17 +58,17 @@ spec:
             cpu: "200m"
             memory: "150Mi"
         readinessProbe:
+          tcpSocket:
+            port: 53
+          initialDelaySeconds: 5
+          periodSeconds: 10 
+        livenessProbe:
           exec:
             command: ['dig', '@127.0.0.1', 'pi-hole.net']
-          timeoutSeconds: 20
-          initialDelaySeconds: 5
-          periodSeconds: 60
-          failureThreshold: 1
-        livenessProbe:
-          tcpSocket:
-            port: dns-tcp
+          timeoutSeconds: 10
           initialDelaySeconds: 15
-          periodSeconds: 30
+          periodSeconds: 90
+          failureThreshold: 1
         volumeMounts:
           - name: pihole-etc-volume
             mountPath: /etc/pihole/
@@ -90,17 +90,16 @@ spec:
             cpu: "50m"
             memory: "100Mi"
         readinessProbe:
-          exec:
-            command: ['dig', '-p', '5054', '@127.0.0.1', 'pi-hole.net']
-          timeoutSeconds: 20
+          tcpSocket:
+            port: 5054
           initialDelaySeconds: 5
-          periodSeconds: 60
-          failureThreshold: 2
+          periodSeconds: 10 
         livenessProbe:
           exec:
-            command: ['dig', '-p', '5054', '@127.0.0.1', 'pi-hole.net']
-          initialDelaySeconds: 15
-          periodSeconds: 360
+            command: ['dig', '-p', '5054', '@127.0.0.1', 'google.com']
+          timeoutSeconds: 10
+          initialDelaySeconds: 10
+          periodSeconds: 60
           failureThreshold: 2
       restartPolicy: Always
       volumes:
