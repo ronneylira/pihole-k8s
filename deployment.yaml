@@ -58,18 +58,20 @@ spec:
           limits:
             cpu: "200m"
             memory: "150Mi"
-        readinessProbe:
-          tcpSocket:
-            port: 53
-          initialDelaySeconds: 5
-          periodSeconds: 10 
         livenessProbe:
-          exec:
-            command: ['dig', '@127.0.0.1', 'pi-hole.net']
-          timeoutSeconds: 10
-          initialDelaySeconds: 15
-          periodSeconds: 90
-          failureThreshold: 1
+            httpGet:
+                path: /admin.index.php
+                port: web
+            initialDelaySeconds: 60
+            failureThreshold: 10
+            timeoutSeconds: 5
+        readinessProbe:
+            httpGet:
+                path: /admin.index.php
+                port: web
+            initialDelaySeconds: 60
+            failureThreshold: 3
+            timeoutSeconds: 5
         volumeMounts:
           - name: pihole-etc-volume-#NODE#
             mountPath: /etc/pihole/
@@ -94,8 +96,9 @@ spec:
             cpu: "50m"
             memory: "100Mi"
         readinessProbe:
-          tcpSocket:
-            port: 5054
+          exec:
+            command: ['dig', '-p', '5054', '@127.0.0.1', 'pi-hole.net']
+          timeoutSeconds: 10
           initialDelaySeconds: 5
           periodSeconds: 10 
         livenessProbe:
