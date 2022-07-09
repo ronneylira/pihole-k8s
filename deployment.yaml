@@ -75,7 +75,10 @@ spec:
             mountPath: /etc/pihole/
           - name: pihole-dnsmasqd-volume-#NODE#
             mountPath: /etc/dnsmasq.d/
-      - name: cloudflared
+      - envFrom:
+        - configMapRef:
+            name: env-configmap-cloudflared
+        name: cloudflared
         image: visibilityspots/cloudflared:latest
         imagePullPolicy: Always
         ports:
