@@ -26,6 +26,7 @@ spec:
       - ip: "192.168.0.50"
         hostnames:
         - "pihole.ronneylira.com"
+        - "pihole2.ronneylira.com"
       containers:
       - envFrom:
         - configMapRef:
