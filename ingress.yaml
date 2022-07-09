@@ -9,7 +9,7 @@ metadata:
 spec:
   tls:
     - hosts:
-      - "pihole.ronneylira.com"
+      - "*.ronneylira.com"
       secretName: cert-ronneylira
   rules:
   - host: pihole.ronneylira.com
@@ -19,7 +19,17 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: pihole-web
+            name: pihole-web-a
+            port:
+              number: 80
+  - host: pihole2.ronneylira.com
+    http:
+      paths:
+      - path: /admin
+        pathType: Prefix
+        backend:
+          service:
+            name: pihole-web-b
             port:
               number: 80
 ---

@@ -1,13 +1,15 @@
+#usage get-content .\deployment.yaml | %{$_ -replace "#NODE#","a"} | kubectl apply -f -
+---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: pihole
+  name: pihole-#NODE#
   namespace: pihole
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: pihole
+    name: pihole-#NODE#
   minReplicas: 2
   maxReplicas: 4
   targetCPUUtilizationPercentage: 70

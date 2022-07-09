@@ -1,16 +1,17 @@
+#usage get-content .\deployment.yaml | %{$_ -replace "#NODE#","a"} | kubectl apply -f -
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: pihole
-  name: pihole
+    app: pihole-#NODE#
+  name: pihole-#NODE#
   namespace: pihole
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: pihole
+      app: pihole-#NODE#
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -19,7 +20,7 @@ spec:
   template:
     metadata:
       labels:
-        app: pihole
+        app: pihole-#NODE#
     spec:
       hostAliases:
       - ip: "192.168.0.50"
@@ -70,9 +71,9 @@ spec:
           periodSeconds: 90
           failureThreshold: 1
         volumeMounts:
-          - name: pihole-etc-volume
+          - name: pihole-etc-volume-#NODE#
             mountPath: /etc/pihole/
-          - name: pihole-dnsmasqd-volume
+          - name: pihole-dnsmasqd-volume-#NODE#
             mountPath: /etc/dnsmasq.d/
       - name: cloudflared
         image: visibilityspots/cloudflared:latest
@@ -103,9 +104,9 @@ spec:
           failureThreshold: 2
       restartPolicy: Always
       volumes:
-      - name: pihole-etc-volume
+      - name: pihole-etc-volume-#NODE#
         persistentVolumeClaim:
-          claimName: pihole-etc-volume
-      - name: pihole-dnsmasqd-volume
+          claimName: pihole-etc-volume-#NODE#
+      - name: pihole-dnsmasqd-volume-#NODE#
         persistentVolumeClaim:
-          claimName: pihole-dnsmasqd-volume
+          claimName: pihole-dnsmasqd-volume-#NODE#

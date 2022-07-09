@@ -1,8 +1,7 @@
----
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pihole-etc-volume
+  name: pihole-etc-volume-#NODE#
   namespace: pihole
 spec:
   storageClassName: nfs-csi-delete
@@ -15,7 +14,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pihole-dnsmasqd-volume
+  name: pihole-dnsmasqd-volume-#NODE#
   namespace: pihole
 spec:
   storageClassName: nfs-csi-delete
@@ -24,3 +23,4 @@ spec:
   resources:
     requests:
       storage: 1Gi
+---

@@ -1,14 +1,15 @@
+#usage get-content .\deployment.yaml | %{$_ -replace "#NODE#","a"} | kubectl apply -f -
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: pihole-web
+  name: pihole-web-#NODE#
   namespace: pihole
   labels:
-    app: pihole
+    app: pihole-#NODE#
 spec:
   selector:
-    app: pihole
+    app: pihole-#NODE#
   ports:
   - protocol: TCP
     port: 80
@@ -19,13 +20,13 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: pihole-tcp
+  name: pihole-tcp-#NODE#
   namespace: pihole
   annotations:
     metallb.universe.tf/allow-shared-ip: dns
 spec:
   selector:
-    app: pihole
+    app: pihole-#NODE#
   ports:
   - protocol: TCP
     port: 53
@@ -38,13 +39,13 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: pihole-udp
+  name: pihole-udp-#NODE#
   namespace: pihole
   annotations:
     metallb.universe.tf/allow-shared-ip: dns
 spec:
   selector:
-    app: pihole
+    app: pihole-#NODE#
   ports:
   - protocol: UDP
     port: 53
@@ -53,3 +54,4 @@ spec:
   type: LoadBalancer
   loadBalancerIP: 192.168.0.12
   externalTrafficPolicy: Local
+---
